@@ -1,6 +1,7 @@
 package br.rickcm.proposta.model;
 
-import br.rickcm.proposta.validator.CpfCnpj;
+import br.rickcm.proposta.enums.StatusProposta;
+import br.rickcm.proposta.rest.dto.ResultadoAnalise;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -34,6 +35,8 @@ public class Proposta {
     @Positive
     @Column(nullable = false)
     private BigDecimal salario;
+    @Enumerated(EnumType.STRING)
+    private StatusProposta status;
 
     @Deprecated
     public Proposta() {
@@ -82,5 +85,17 @@ public class Proposta {
 
     public Long getId() {
         return this.id;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void atualizaStatus(ResultadoAnalise resultadoAnalise) {
+        this.status = resultadoAnalise.getResultadoSolicitacao().getStatusAnalise();
     }
 }

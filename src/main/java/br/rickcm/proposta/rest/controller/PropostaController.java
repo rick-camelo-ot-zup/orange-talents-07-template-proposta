@@ -3,12 +3,16 @@ package br.rickcm.proposta.rest.controller;
 import br.rickcm.proposta.model.Proposta;
 import br.rickcm.proposta.repository.PropostaRepository;
 import br.rickcm.proposta.rest.dto.NovaPropostaRequest;
+import br.rickcm.proposta.rest.external.ProcessadorServicoAnalise;
 import br.rickcm.proposta.validator.ProibeMaisDeUmaPropostaParaMesmoSolicitante;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
@@ -17,12 +21,17 @@ import java.util.Optional;
 @RequestMapping("/propostas")
 public class PropostaController {
 
-    private PropostaRepository repository;
-    private ProibeMaisDeUmaPropostaParaMesmoSolicitante proibeMaisDeUmaPropostaParaMesmoSolicitante;
+    private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
 
-    public PropostaController(PropostaRepository repository, ProibeMaisDeUmaPropostaParaMesmoSolicitante proibeMaisDeUmaPropostaParaMesmoSolicitante) {
+    private final PropostaRepository repository;
+    private final ProibeMaisDeUmaPropostaParaMesmoSolicitante proibeMaisDeUmaPropostaParaMesmoSolicitante;
+    private final ProcessadorServicoAnalise servicoAnalise;
+
+    public PropostaController(PropostaRepository repository,
+                              ProibeMaisDeUmaPropostaParaMesmoSolicitante proibeMaisDeUmaPropostaParaMesmoSolicitante, ProcessadorServicoAnalise servicoAnalise) {
         this.repository = repository;
         this.proibeMaisDeUmaPropostaParaMesmoSolicitante = proibeMaisDeUmaPropostaParaMesmoSolicitante;
+        this.servicoAnalise = servicoAnalise;
     }
 
     @InitBinder
@@ -31,10 +40,16 @@ public class PropostaController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request,
                                    UriComponentsBuilder uriBuilder){
+
         Proposta novaProposta = request.toModel();
         repository.save(novaProposta);
+        servicoAnalise.realizaAnalise(novaProposta);
+
+        logger.info("Proposta documento={} salário={} criada com sucesso!", request.getDocumento(), request.getSalario());
+
         URI uri = uriBuilder.path("/propostas/{id}").buildAndExpand(novaProposta.getId()).toUri();
 
         return ResponseEntity.created(uri).build();

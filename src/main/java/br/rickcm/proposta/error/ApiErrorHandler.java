@@ -1,5 +1,6 @@
 package br.rickcm.proposta.error;
 
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestControllerAdvice
@@ -43,5 +45,14 @@ public class ApiErrorHandler{
 
         ErrorDto errorDto = new ErrorDto(mensagens);
         return ResponseEntity.status(apiErroException.getHttpStatus()).body(errorDto);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorDto> handleFeignStatusException(FeignException e, HttpServletResponse response) {
+        Collection<String> mensagens = new ArrayList<>();
+        mensagens.add(e.getMessage());
+
+        ErrorDto errorDto = new ErrorDto(mensagens);
+        return ResponseEntity.status(e.status()).body(errorDto);
     }
 }
