@@ -16,6 +16,21 @@ spring:
     username: keycloak
     password: password
 
+#CONFIGURAÇÕES DE SEGURANÇA DO ACTUATOR
+management:
+  endpoint:
+    web:
+      exposure:
+        include: health
+        exclude: env,beans
+      cors:
+        allowed-origins: http://localhost
+        allowed-methods: GET
+#HABILITA OU NAO OS DETALHES DA CHECAGEM
+#    health:
+#      show-details: always
+
+#CONFIGURAÇÕES DE TIMEOUT DO FEIGN
 feign:
   client:
     config:
