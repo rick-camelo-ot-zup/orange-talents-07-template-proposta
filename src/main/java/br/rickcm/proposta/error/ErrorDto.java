@@ -1,17 +1,18 @@
 package br.rickcm.proposta.error;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class ErrorDto {
 
-    private Map<String, List<String>> errors;
+    private Collection<String> mensagens;
 
-    public ErrorDto(Map<String, List<String>> errors) {
-        this.errors = errors;
+    public ErrorDto(Collection<String> mensagens) {
+        this.mensagens = mensagens;
     }
 
-    public Map<String, List<String>> getErrors() {
-        return errors;
+    public Collection<String> getMensagens() {
+        return mensagens;
     }
 }

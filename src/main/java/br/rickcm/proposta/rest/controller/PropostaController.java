@@ -3,7 +3,9 @@ package br.rickcm.proposta.rest.controller;
 import br.rickcm.proposta.model.Proposta;
 import br.rickcm.proposta.repository.PropostaRepository;
 import br.rickcm.proposta.rest.dto.NovaPropostaRequest;
+import br.rickcm.proposta.validator.ProibeMaisDeUmaPropostaParaMesmoSolicitante;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -16,9 +18,16 @@ import java.util.Optional;
 public class PropostaController {
 
     private PropostaRepository repository;
+    private ProibeMaisDeUmaPropostaParaMesmoSolicitante proibeMaisDeUmaPropostaParaMesmoSolicitante;
 
-    public PropostaController(PropostaRepository repository) {
+    public PropostaController(PropostaRepository repository, ProibeMaisDeUmaPropostaParaMesmoSolicitante proibeMaisDeUmaPropostaParaMesmoSolicitante) {
         this.repository = repository;
+        this.proibeMaisDeUmaPropostaParaMesmoSolicitante = proibeMaisDeUmaPropostaParaMesmoSolicitante;
+    }
+
+    @InitBinder
+    public void init(WebDataBinder binder){
+        binder.addValidators(proibeMaisDeUmaPropostaParaMesmoSolicitante);
     }
 
     @PostMapping
