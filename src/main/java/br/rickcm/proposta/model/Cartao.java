@@ -72,4 +72,8 @@ public class Cartao {
         this.vencimento = vencimento;
         this.proposta = proposta;
     }
+
+    public String getId() {
+        return id;
+    }
 }

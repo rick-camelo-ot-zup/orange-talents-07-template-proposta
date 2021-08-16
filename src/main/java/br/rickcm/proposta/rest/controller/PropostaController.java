@@ -3,6 +3,7 @@ package br.rickcm.proposta.rest.controller;
 import br.rickcm.proposta.model.Proposta;
 import br.rickcm.proposta.repository.PropostaRepository;
 import br.rickcm.proposta.rest.dto.NovaPropostaRequest;
+import br.rickcm.proposta.rest.dto.PropostaResponse;
 import br.rickcm.proposta.rest.external.ProcessadorServicoAnalise;
 import br.rickcm.proposta.validator.ProibeMaisDeUmaPropostaParaMesmoSolicitante;
 import org.slf4j.Logger;
@@ -55,16 +56,13 @@ public class PropostaController {
         return ResponseEntity.created(uri).build();
     }
 
-    /*
-     * Endpoint criado para testes de retorno.
-     * TODO refatorar futuramente.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id){
         Optional<Proposta> possivelProposta = repository.findById(id);
         if (possivelProposta.isEmpty()){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(possivelProposta.get().toString());
+        PropostaResponse propostaResponse = new PropostaResponse(possivelProposta.get());
+        return ResponseEntity.ok(propostaResponse);
     }
 }
