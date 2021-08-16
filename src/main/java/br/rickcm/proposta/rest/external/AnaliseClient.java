@@ -3,6 +3,7 @@ package br.rickcm.proposta.rest.external;
 import br.rickcm.proposta.rest.dto.ResultadoAnalise;
 import br.rickcm.proposta.rest.dto.SolicitacaoAnaliseRequest;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -10,5 +11,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AnaliseClient {
 
     @PostMapping
-    ResultadoAnalise getAnalise(@RequestBody SolicitacaoAnaliseRequest request);
+    ResponseEntity<ResultadoAnalise> getAnalise(@RequestBody SolicitacaoAnaliseRequest request);
 }

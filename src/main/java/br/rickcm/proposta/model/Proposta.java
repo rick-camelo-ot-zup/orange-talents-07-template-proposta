@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -37,6 +36,9 @@ public class Proposta {
     private BigDecimal salario;
     @Enumerated(EnumType.STRING)
     private StatusProposta status;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "cartao_id")
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
@@ -74,12 +76,14 @@ public class Proposta {
 
     @Override
     public String toString() {
-        return "Proposta{"+
+        return "Proposta{" +
                 ", documento='" + documento + '\'' +
                 ", email='" + email + '\'' +
                 ", nome='" + nome + '\'' +
                 ", endereco='" + endereco + '\'' +
                 ", salario=" + salario +
+                ", status=" + status.name() +
+                ", cartao=" + cartao +
                 '}';
     }
 
@@ -97,5 +101,13 @@ public class Proposta {
 
     public void atualizaStatus(ResultadoAnalise resultadoAnalise) {
         this.status = resultadoAnalise.getResultadoSolicitacao().getStatusAnalise();
+    }
+
+    public void atualizaStatus(StatusProposta status) {
+        this.status = status;
+    }
+
+    public void atrelaCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 }
