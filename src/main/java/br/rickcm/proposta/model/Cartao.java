@@ -44,6 +44,9 @@ public class Cartao {
     @OneToOne(mappedBy = "cartao",
             fetch = FetchType.EAGER)
     private Proposta proposta;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="cartao_id")
+    private Set<Biometria> biometrias;
 
     @Deprecated
     public Cartao() {
@@ -75,5 +78,9 @@ public class Cartao {
 
     public String getId() {
         return id;
+    }
+
+    public void atrelaBiometria(Biometria biometria){
+        this.biometrias.add(biometria);
     }
 }

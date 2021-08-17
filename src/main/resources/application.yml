@@ -1,8 +1,8 @@
 spring:
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       javax:
         persistence:
