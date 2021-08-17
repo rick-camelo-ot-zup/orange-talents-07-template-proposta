@@ -12,7 +12,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_propostas
+    url: jdbc:postgresql://${HOST_DB:localhost}:${PORT_DB:5432}/db_propostas
     username: keycloak
     password: password
 
@@ -35,14 +35,14 @@ feign:
   client:
     config:
       analises:
-        read-timeout: 100
-        connect-timeout: 100
+        readTimeout: 5000
+        connectTimeout: 50000
 
 #CONFIGURAÇÃO SERVIÇOS EXTERNOS
 analises:
-  url: ${URL_SISTEMA_ANALISE:http://localhost:9999/api/solicitacao}
+  url: http://${HOST_SISTEMA_ANALISE:localhost}:${PORT_SISTEMA_ANALISE:9999}/api/solicitacao
 cartoes:
-  url: ${URL_SISTEMA_CARTOES:http://localhost:8888/api/cartoes}
+  url: http://${HOST_SISTEMA_CARTOES:localhost}:${PORT_SISTEMA_CARTOES:8888}/api/cartoes
 
 #CONFIGURAÇÃO DE TASKS
 periodicidade:

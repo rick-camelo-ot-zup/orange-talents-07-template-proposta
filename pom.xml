@@ -10,7 +10,7 @@
     </parent>
     <groupId>br.rickcm</groupId>
     <artifactId>proposta</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>proposta</name>
     <description>Microservice de Propostas</description>
     <properties>

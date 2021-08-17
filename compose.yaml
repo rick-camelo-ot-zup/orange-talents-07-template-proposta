@@ -102,6 +102,26 @@ services:
       KAFKA_HOST: "kafka:29092"
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
 
+  propostas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rick-camelo-ot7/propostas
+    ports:
+      - 8081:8080
+    container_name: orange-talents-07-template-proposta_propostas_1
+    depends_on:
+      - postgres
+      - analise
+      - contas
+    environment:
+      HOST_DB: postgres
+      PORT_DB: 5432
+      HOST_SISTEMA_ANALISE: analise
+      PORT_SISTEMA_ANALISE: 9999
+      HOST_SISTEMA_CARTOES: contas
+      PORT_SISTEMA_CARTOES: 8888
+
   jaeger:
     image: jaegertracing/all-in-one:1.21.0
     ports:
