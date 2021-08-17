@@ -114,13 +114,13 @@ services:
       - postgres
       - analise
       - contas
+      - keycloak
     environment:
-      HOST_DB: postgres
-      PORT_DB: 5432
-      HOST_SISTEMA_ANALISE: analise
-      PORT_SISTEMA_ANALISE: 9999
-      HOST_SISTEMA_CARTOES: contas
-      PORT_SISTEMA_CARTOES: 8888
+      HOST_DB: postgres:5432/db_propostas
+      URL_SISTEMA_ANALISE: http://analise:9999/api/solicitacao
+      URL_SISTEMA_CARTOES: http://contas:8888/api/cartoes
+      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
+      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
 
   jaeger:
     image: jaegertracing/all-in-one:1.21.0

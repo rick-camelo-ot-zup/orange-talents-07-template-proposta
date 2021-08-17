@@ -1,8 +1,8 @@
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       javax:
         persistence:
@@ -12,9 +12,15 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://${HOST_DB:localhost}:${PORT_DB:5432}/db_propostas
+    url: jdbc:postgresql://${HOST_DB:localhost:5432/db_propostas}
     username: keycloak
     password: password
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposta}
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposta/protocol/openid-connect/certs}
 
 #CONFIGURAÇÕES DE SEGURANÇA DO ACTUATOR
 management:
@@ -40,9 +46,9 @@ feign:
 
 #CONFIGURAÇÃO SERVIÇOS EXTERNOS
 analises:
-  url: http://${HOST_SISTEMA_ANALISE:localhost}:${PORT_SISTEMA_ANALISE:9999}/api/solicitacao
+  url: ${URL_SISTEMA_ANALISE:http://localhost:9999/api/solicitacao}
 cartoes:
-  url: http://${HOST_SISTEMA_CARTOES:localhost}:${PORT_SISTEMA_CARTOES:8888}/api/cartoes
+  url: ${URL_SISTEMA_CARTOES:http://localhost:8888/api/cartoes}
 
 #CONFIGURAÇÃO DE TASKS
 periodicidade:

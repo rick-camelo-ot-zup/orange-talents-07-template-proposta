@@ -5,16 +5,21 @@ import br.rickcm.proposta.model.Cartao;
 import br.rickcm.proposta.repository.BiometriaRepository;
 import br.rickcm.proposta.repository.CartaoRepository;
 import br.rickcm.proposta.rest.dto.BiometriaRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 
 @RestController
 public class BiometriaController {
+
+    private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
 
     private BiometriaRepository repository;
     private CartaoRepository cartaoRepository;
@@ -25,6 +30,7 @@ public class BiometriaController {
     }
 
     @PostMapping("/cartoes/{id}/biometrias")
+    @Transactional
     public ResponseEntity<?> create(@PathVariable("id") String id,
                                     @RequestBody @Valid BiometriaRequest request,
                                     UriComponentsBuilder uriBuilder){
@@ -35,6 +41,8 @@ public class BiometriaController {
         Cartao cartao = possivelCartao.get();
         Biometria biometria = request.toModel(cartao);
         repository.save(biometria);
+
+        logger.info("Biometria criada com sucesso para o cartao={}!", cartao.getId());
 
         URI uri = uriBuilder.path("/biometrias/{id}").buildAndExpand(biometria.getId()).toUri();
         return ResponseEntity.ok().location(uri).build();
