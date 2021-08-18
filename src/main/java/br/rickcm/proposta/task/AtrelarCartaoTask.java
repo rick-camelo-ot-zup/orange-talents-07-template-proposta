@@ -9,7 +9,6 @@ import br.rickcm.proposta.rest.external.CartaoClient;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +34,7 @@ public class AtrelarCartaoTask {
         List<Proposta> propostasCartaoNull = repository.findByCartaoIsNullAndStatus(StatusProposta.ELEGIVEL);
         propostasCartaoNull.stream().forEach(proposta -> {
             try {
-                ResponseEntity<RetornoCartao> cartaoResponse = cartaoClient.getCartao(String.valueOf(proposta.getId()));
-                RetornoCartao retornoCartao = cartaoResponse.getBody();
+                RetornoCartao retornoCartao = cartaoClient.getCartao(String.valueOf(proposta.getId()));
                 Cartao cartao = retornoCartao.toModel(proposta);
                 proposta.atrelaCartao(cartao);
                 logger.info("Cartão {} atrelado a proposta documento={}!", retornoCartao.getId(), proposta.getDocumento());

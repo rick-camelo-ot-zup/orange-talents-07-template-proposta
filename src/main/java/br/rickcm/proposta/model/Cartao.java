@@ -1,10 +1,13 @@
 package br.rickcm.proposta.model;
 
+import br.rickcm.proposta.enums.StatusCartao;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cartao {
@@ -47,6 +50,8 @@ public class Cartao {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="cartao_id")
     private Set<Biometria> biometrias;
+    @Enumerated(EnumType.STRING)
+    private StatusCartao status;
 
     @Deprecated
     public Cartao() {
@@ -74,6 +79,7 @@ public class Cartao {
         this.renegociacao = renegociacao;
         this.vencimento = vencimento;
         this.proposta = proposta;
+        this.status = StatusCartao.HABILITADO;
     }
 
     public String getId() {
@@ -82,5 +88,14 @@ public class Cartao {
 
     public void atrelaBiometria(Biometria biometria){
         this.biometrias.add(biometria);
+    }
+
+    public boolean isBloqueado(){
+        List<BloqueioCartao> bloqueioAtivo = this.bloqueios.
+                stream()
+                .filter(bloqueioCartao -> bloqueioCartao.isAtivo() == true)
+                .collect(Collectors.toList());
+        return (status.equals(StatusCartao.BLOQUEADO) || !bloqueioAtivo.isEmpty());
+
     }
 }

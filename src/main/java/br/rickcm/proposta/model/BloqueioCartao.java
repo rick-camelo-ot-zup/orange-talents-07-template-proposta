@@ -14,7 +14,6 @@ public class BloqueioCartao {
     private LocalDateTime bloqueadoEm;
     private String sistemaResponsavel;
     private boolean ativo;
-
     @Deprecated
     public BloqueioCartao() {
     }
@@ -24,5 +23,9 @@ public class BloqueioCartao {
         this.bloqueadoEm = bloqueadoEm;
         this.sistemaResponsavel = sistemaResponsavel;
         this.ativo = ativo;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
     }
 }
