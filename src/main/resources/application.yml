@@ -15,23 +15,47 @@ spring:
     url: jdbc:postgresql://${HOST_DB:localhost:5432/db_propostas}
     username: keycloak
     password: password
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposta}
-          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposta/protocol/openid-connect/certs}
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposta}
+#          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposta/protocol/openid-connect/certs}
+
+
+keycloak:
+  realm: ${KEYCLOCK_REALM:proposta-dev}
+  auth-server-url:  ${KEYCLOCK_SERVER_URL:http://localhost:18080/auth}
+  ssl-required: ${KEYCLOCK_SSL:external}
+  resource: ${KEYCLOCK_RESOURCE:propostas-app}
+  credentials:
+    secret: ${KEYCLOCK_SECRET:42379d7a-bb2d-43e3-9d73-88845bdaebd0}
+  use-resource-role-mappings: ${KEYCLOCK_ROLE_MAPPINGS:true}
+  bearer-only: ${KEYCLOCK_BEARER:true}
+
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG
 
 #CONFIGURAÇÕES DE SEGURANÇA DO ACTUATOR
 management:
-  endpoint:
+  endpoints:
     web:
       exposure:
-        include: health
+        include: info,health,prometheus
         exclude: env,beans
       cors:
         allowed-origins: http://localhost
         allowed-methods: GET
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application-name: propostas-app
+
 #HABILITA OU NAO OS DETALHES DA CHECAGEM
 #    health:
 #      show-details: always

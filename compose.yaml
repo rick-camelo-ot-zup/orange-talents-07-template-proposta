@@ -106,7 +106,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: rick-camelo-ot7/propostas
+    image: rcmto/propostas
     ports:
       - 8081:8080
     container_name: orange-talents-07-template-proposta_propostas_1
@@ -119,8 +119,12 @@ services:
       HOST_DB: postgres:5432/db_propostas
       URL_SISTEMA_ANALISE: http://analise:9999/api/solicitacao
       URL_SISTEMA_CARTOES: http://contas:8888/api/cartoes
-      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
-      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
+      KEYCLOCK_REALM: proposta
+      KEYCLOCK_RESOURCE: propostas-app
+      KEYCLOCK_SERVER_URL: http://keycloak:8080/auth
+      KEYCLOCK_SECRET: e91c8efc-f041-4dbb-b137-0eaf408ae448
+#      KEYCLOAK_ISSUER_URI: http:/keycloak:8080/auth/realms/proposta
+#      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
 
   jaeger:
     image: jaegertracing/all-in-one:1.21.0
