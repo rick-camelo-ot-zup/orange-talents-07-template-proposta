@@ -55,9 +55,6 @@ public class Cartao {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="cartao_id")
     private List<RequisicaoBloqueioCartao> requisicoesBloqueios;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="cartao_id")
-    private List<RequisicaoAvisoCartao> requisicoesAvisos;
 
     @Deprecated
     public Cartao() {

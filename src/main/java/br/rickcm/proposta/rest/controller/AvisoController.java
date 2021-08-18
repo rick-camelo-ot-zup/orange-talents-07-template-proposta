@@ -1,10 +1,10 @@
 package br.rickcm.proposta.rest.controller;
 
+import br.rickcm.proposta.model.AvisoCartao;
 import br.rickcm.proposta.model.Cartao;
-import br.rickcm.proposta.model.RequisicaoAvisoCartao;
 import br.rickcm.proposta.repository.CartaoRepository;
-import br.rickcm.proposta.repository.RequisicaoAvisoRepository;
 import br.rickcm.proposta.rest.dto.RequisicaoAvisoRequest;
+import br.rickcm.proposta.rest.external.ProcessadorServicoCartao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,11 @@ public class AvisoController {
     private final Logger logger = LoggerFactory.getLogger(AvisoController.class);
 
     private CartaoRepository cartaoRepository;
-    private RequisicaoAvisoRepository avisoRepository;
+    private ProcessadorServicoCartao servicoCartao;
 
-    public AvisoController(CartaoRepository cartaoRepository, RequisicaoAvisoRepository avisoRepository) {
+    public AvisoController(CartaoRepository cartaoRepository, ProcessadorServicoCartao servicoCartao) {
         this.cartaoRepository = cartaoRepository;
-        this.avisoRepository = avisoRepository;
+        this.servicoCartao = servicoCartao;
     }
 
     @PostMapping("/cartoes/{id}/avisos")
@@ -42,12 +42,10 @@ public class AvisoController {
         String userAgent = request.getHeader("User-Agent");
         String ip = request.getRemoteAddr();
 
-        RequisicaoAvisoCartao requisicaoAviso = avisoRequest.toModel(cartao, ip, userAgent);
+        AvisoCartao avisoCartao = avisoRequest.toModel(cartao, ip, userAgent);
 
-        avisoRepository.save(requisicaoAviso);
+        ResponseEntity<?> response = servicoCartao.notificaAviso(cartao, avisoCartao);
 
-        logger.info("Adicionada requisição de aviso={} para o cartao={}", requisicaoAviso.getId(), cartao.getId());
-
-        return ResponseEntity.ok().build();
+        return response;
     }
 }

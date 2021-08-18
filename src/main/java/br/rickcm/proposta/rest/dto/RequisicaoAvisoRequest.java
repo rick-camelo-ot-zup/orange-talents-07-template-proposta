@@ -1,7 +1,7 @@
 package br.rickcm.proposta.rest.dto;
 
+import br.rickcm.proposta.model.AvisoCartao;
 import br.rickcm.proposta.model.Cartao;
-import br.rickcm.proposta.model.RequisicaoAvisoCartao;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
@@ -14,17 +14,17 @@ public class RequisicaoAvisoRequest {
     private String destino;
     @NotNull
     @Future
-    private LocalDate dataTermino;
+    private LocalDate validoAte;
 
-    public RequisicaoAvisoCartao toModel(@NotNull Cartao cartao, String ip, String userAgent){
-        return new RequisicaoAvisoCartao(destino, dataTermino, ip, userAgent, cartao);
+    public AvisoCartao toModel(@NotNull Cartao cartao, String ip, String userAgent){
+        return new AvisoCartao(destino, validoAte, ip, userAgent, cartao);
     }
 
     public String getDestino() {
         return destino;
     }
 
-    public LocalDate getDataTermino() {
-        return dataTermino;
+    public LocalDate getValidoAte() {
+        return validoAte;
     }
 }

@@ -1,5 +1,6 @@
 package br.rickcm.proposta.rest.external;
 
+import br.rickcm.proposta.rest.dto.AvisoCartaoDto;
 import br.rickcm.proposta.rest.dto.RetornoBloqueio;
 import br.rickcm.proposta.rest.dto.RetornoCartao;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,4 +20,7 @@ public interface CartaoClient {
 
     @PostMapping("/{id}/bloqueios")
     ResponseEntity<RetornoBloqueio> bloqueia(@PathVariable String id, @RequestBody Map<String, String> body);
+
+    @PostMapping("/{id}/avisos")
+    ResponseEntity<AvisoCartaoDto> avisa(@PathVariable String id, @RequestBody Map<String, String> body);
 }
