@@ -52,6 +52,12 @@ public class Cartao {
     private Set<Biometria> biometrias;
     @Enumerated(EnumType.STRING)
     private StatusCartao status;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="cartao_id")
+    private List<RequisicaoBloqueioCartao> requisicoesBloqueios;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="cartao_id")
+    private List<RequisicaoAvisoCartao> requisicoesAvisos;
 
     @Deprecated
     public Cartao() {
