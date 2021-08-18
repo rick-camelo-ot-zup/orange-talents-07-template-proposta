@@ -98,4 +98,8 @@ public class Cartao {
         return (status.equals(StatusCartao.BLOQUEADO) || !bloqueioAtivo.isEmpty());
 
     }
+
+    public void bloqueia(){
+        this.status = StatusCartao.BLOQUEADO;
+    }
 }

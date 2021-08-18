@@ -2,9 +2,9 @@ package br.rickcm.proposta.rest.dto;
 
 public class RetornoBloqueio {
 
-    private String sistemaResponsavel;
+    private String resultado;
 
-    public String getSistemaResponsavel() {
-        return sistemaResponsavel;
+    public String getResultado() {
+        return resultado;
     }
 }
