@@ -1,6 +1,7 @@
 package br.rickcm.proposta.model;
 
 import br.rickcm.proposta.enums.StatusCartao;
+import br.rickcm.proposta.enums.TipoCarteira;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -28,7 +29,7 @@ public class Cartao {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="cartao_id")
-    private List<CarteiraCartao> carteiras;
+    private Set<CarteiraDigital> carteiras;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="cartao_id")
@@ -65,7 +66,7 @@ public class Cartao {
                   String titular,
                   List<BloqueioCartao> bloqueios,
                   List<AvisoCartao> avisos,
-                  List<CarteiraCartao> carteiras,
+                  Set<CarteiraDigital> carteiras,
                   Set<ParcelaCartao> parcelas,
                   BigDecimal limite,
                   RenegociacaoCartao renegociacao,
@@ -102,7 +103,16 @@ public class Cartao {
 
     }
 
+    public void associaCarteira(CarteiraDigital carteira) {
+        this.carteiras.add(carteira);
+    }
+
     public void bloqueia(){
         this.status = StatusCartao.BLOQUEADO;
+    }
+
+    public boolean isCarteiraAssociada(TipoCarteira carteira){
+        CarteiraDigital carteiraDigital = new CarteiraDigital("idQualquer", carteira, "emailqualquer", this);
+        return this.carteiras.contains(carteiraDigital);
     }
 }

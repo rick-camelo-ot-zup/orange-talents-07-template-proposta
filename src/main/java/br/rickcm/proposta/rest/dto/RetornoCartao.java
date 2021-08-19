@@ -14,7 +14,6 @@ public class RetornoCartao {
     private LocalDateTime emitidoEm;
     private String titular;
     private List<BloqueioCartaoDto> bloqueios;
-    private List<CarteiraCartaoDto> carteiras;
     private List<ParcelaCartaoDto> parcelas;
     private BigDecimal limite;
     private RenegociacaoCartaoDto renegociacao;
@@ -23,7 +22,6 @@ public class RetornoCartao {
 
     public Cartao toModel(Proposta proposta) {
         List<BloqueioCartao> bloqueios = this.bloqueios.stream().map(BloqueioCartaoDto::toModel).collect(Collectors.toList());
-        List<CarteiraCartao> carteiras = this.carteiras.stream().map(CarteiraCartaoDto::toModel).collect(Collectors.toList());
         Set<ParcelaCartao> parcelas = this.parcelas.stream().map(ParcelaCartaoDto::toModel).collect(Collectors.toSet());
         RenegociacaoCartao renegociacao = null;
         VencimentoCartao vencimento = null;;
@@ -38,7 +36,7 @@ public class RetornoCartao {
                 titular,
                 bloqueios,
                 null,
-                carteiras,
+                null,
                 parcelas,
                 limite,
                 renegociacao,
@@ -60,10 +58,6 @@ public class RetornoCartao {
 
     public List<?> getBloqueios() {
         return bloqueios;
-    }
-
-    public List<?> getCarteiras() {
-        return carteiras;
     }
 
     public List<?> getParcelas() {
