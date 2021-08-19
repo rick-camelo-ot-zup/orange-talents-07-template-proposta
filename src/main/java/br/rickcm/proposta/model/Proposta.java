@@ -2,6 +2,7 @@ package br.rickcm.proposta.model;
 
 import br.rickcm.proposta.enums.StatusProposta;
 import br.rickcm.proposta.rest.dto.ResultadoAnalise;
+import br.rickcm.proposta.util.Encryptador;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -39,6 +40,12 @@ public class Proposta {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cartao_id")
     private Cartao cartao;
+
+    @PrePersist
+    protected void onCreate(){
+        Encryptador encryptador = new Encryptador();
+        this.documento = encryptador.encrypt(this.documento);
+    }
 
     @Deprecated
     public Proposta() {

@@ -6,6 +6,7 @@ import br.rickcm.proposta.model.Proposta;
 import br.rickcm.proposta.repository.PropostaRepository;
 import br.rickcm.proposta.rest.dto.RetornoCartao;
 import br.rickcm.proposta.rest.external.CartaoClient;
+import br.rickcm.proposta.util.Encryptador;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,13 +32,14 @@ public class AtrelarCartaoTask {
     @Scheduled(fixedDelayString = "${periodicidade.atrela-cartao}")
     @Transactional
     protected void executaOperacao() {
+        Encryptador encryptador = new Encryptador();
         List<Proposta> propostasCartaoNull = repository.findByCartaoIsNullAndStatus(StatusProposta.ELEGIVEL);
         propostasCartaoNull.stream().forEach(proposta -> {
             try {
                 RetornoCartao retornoCartao = cartaoClient.getCartao(String.valueOf(proposta.getId()));
                 Cartao cartao = retornoCartao.toModel(proposta);
                 proposta.atrelaCartao(cartao);
-                logger.info("Cartão {} atrelado a proposta documento={}!", retornoCartao.getId(), proposta.getDocumento());
+                logger.info("Cartão {} atrelado a proposta documento={}!", retornoCartao.getId(), encryptador.decrypt(proposta.getDocumento()));
             }catch (FeignException e){
                 logger.error("Falha ao atrelar cartão a proposta documento={}!", proposta.getDocumento());
             }
