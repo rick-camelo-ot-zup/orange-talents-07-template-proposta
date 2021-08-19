@@ -30,7 +30,7 @@ public class AtrelarCartaoTask {
 
     @Scheduled(fixedDelayString = "${periodicidade.atrela-cartao}")
     @Transactional
-    private void executaOperacao() {
+    protected void executaOperacao() {
         List<Proposta> propostasCartaoNull = repository.findByCartaoIsNullAndStatus(StatusProposta.ELEGIVEL);
         propostasCartaoNull.stream().forEach(proposta -> {
             try {

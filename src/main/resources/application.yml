@@ -1,8 +1,10 @@
 spring:
+  application:
+    name: propostas-app
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       javax:
         persistence:
@@ -55,6 +57,17 @@ management:
   metrics:
     tags:
       application-name: propostas-app
+
+# CONFIGURAÇÕES DO JAEGER
+opentracing:
+  jaeger:
+    enabled: ${JAEGER_ENABLED:true}
+    service-name: ${spring.application.name}
+    http-sender:
+      url: ${JAEGER_ENDPOINT:http://localhost:14268/api/traces}
+    # Jaeger - Tipo de amostragem (probabilístico) e sua configuração (1 = 100%)
+    probabilistic-sampler:
+      sampling-rate: ${JAEGER_SAMPLER:1}
 
 #HABILITA OU NAO OS DETALHES DA CHECAGEM
 #    health:

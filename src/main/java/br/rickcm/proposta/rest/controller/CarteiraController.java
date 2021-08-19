@@ -29,7 +29,7 @@ public class CarteiraController {
     }
 
     @PostMapping("/cartoes/{id}/carteiras")
-    public ResponseEntity<?> create(@PathVariable("id") String idCartao,
+    public ResponseEntity<?> criaCarteira(@PathVariable("id") String idCartao,
                                     @RequestBody @Valid CarteiraDigitalRequest request,
                                     UriComponentsBuilder uriBuilder){
         Optional<Cartao> possivelCartao = cartaoRepository.findById(idCartao);

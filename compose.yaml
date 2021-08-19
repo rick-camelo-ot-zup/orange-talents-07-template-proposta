@@ -123,8 +123,7 @@ services:
       KEYCLOCK_RESOURCE: propostas-app
       KEYCLOCK_SERVER_URL: http://keycloak:8080/auth
       KEYCLOCK_SECRET: e91c8efc-f041-4dbb-b137-0eaf408ae448
-#      KEYCLOAK_ISSUER_URI: http:/keycloak:8080/auth/realms/proposta
-#      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
+      JAEGER_ENDPOINT: http://jaeger:14268/api/traces
 
   jaeger:
     image: jaegertracing/all-in-one:1.21.0

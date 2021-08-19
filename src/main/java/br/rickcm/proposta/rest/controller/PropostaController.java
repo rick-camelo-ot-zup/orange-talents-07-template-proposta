@@ -42,7 +42,7 @@ public class PropostaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> criar(@RequestBody @Valid NovaPropostaRequest request,
+    public ResponseEntity<?> criaProposta(@RequestBody @Valid NovaPropostaRequest request,
                                    UriComponentsBuilder uriBuilder){
 
         Proposta novaProposta = request.toModel();
@@ -57,7 +57,7 @@ public class PropostaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id){
+    public ResponseEntity<?> buscarPropostaPorId(@PathVariable("id") Long id){
         Optional<Proposta> possivelProposta = repository.findById(id);
         if (possivelProposta.isEmpty()){
             return ResponseEntity.notFound().build();

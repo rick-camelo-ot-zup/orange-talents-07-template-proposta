@@ -31,7 +31,7 @@ public class BiometriaController {
 
     @PostMapping("/cartoes/{id}/biometrias")
     @Transactional
-    public ResponseEntity<?> create(@PathVariable("id") String id,
+    public ResponseEntity<?> criarBiometria(@PathVariable("id") String id,
                                     @RequestBody @Valid BiometriaRequest request,
                                     UriComponentsBuilder uriBuilder){
         Optional<Cartao> possivelCartao = cartaoRepository.findById(id);
@@ -49,7 +49,7 @@ public class BiometriaController {
     }
 
     @GetMapping("/biometrias/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") Long id){
+    public ResponseEntity<?> buscaBiometriaPeloId(@PathVariable("id") Long id){
         Optional<Biometria> possivelBiometria = repository.findById(id);
         if(possivelBiometria.isEmpty()){
             return ResponseEntity.notFound().build();

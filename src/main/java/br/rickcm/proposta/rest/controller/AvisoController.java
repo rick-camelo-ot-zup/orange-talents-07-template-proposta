@@ -30,7 +30,7 @@ public class AvisoController {
     }
 
     @PostMapping("/cartoes/{id}/avisos")
-    public ResponseEntity<?> create(@PathVariable("id") String idCartao,
+    public ResponseEntity<?> criarAviso(@PathVariable("id") String idCartao,
                                     @RequestBody @Valid RequisicaoAvisoRequest avisoRequest,
                                     HttpServletRequest request){
         Optional<Cartao> possivelCartao = cartaoRepository.findById(idCartao);

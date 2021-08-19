@@ -35,7 +35,7 @@ public class BloqueioController {
 
     @PostMapping("/cartoes/{id}/bloqueios")
     @Transactional
-    public ResponseEntity<?> create(@PathVariable("id") String idCartao, HttpServletRequest request){
+    public ResponseEntity<?> criaBloqueio(@PathVariable("id") String idCartao, HttpServletRequest request){
         Optional<Cartao> possivelCartao = cartaoRepository.findById(idCartao);
         if(possivelCartao.isEmpty()){
             return ResponseEntity.notFound().build();
